@@ -1,7 +1,9 @@
 const {NULL_POST} = require('./Errors'); 
 function User(user){
         this.type="User";
-        this._id = user._id||null;
+        if(user._id){
+            this._id = user._id;
+        }
         this.name=user.name;
         this.email=user.email;
         this.auth=user.auth,

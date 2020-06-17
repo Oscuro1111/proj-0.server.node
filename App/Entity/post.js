@@ -3,7 +3,11 @@ const {NULL_POST} = require('../Entity/Errors');
 
 function Post(post) {
   this.type="Post";
-  this._id = post._id||null,
+
+  if(post._id){
+    this._id=post._id;
+  }
+  
   this.title=post.title;
   this.author=post.author;
   this.postFile=post.postFile;

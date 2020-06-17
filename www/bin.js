@@ -2,11 +2,23 @@ const { createUser } = require("../App/Entity/User");
 
 const { createAuthInfo } = require("../App/Entity/auth");
 
-
+const log = console.log;
 async function server({ DB }) {
-const id= "5ee8ac9c8e19d42ba424d315";
 
-const user =  await DB.findOne({type:"User",id:id});
+  const id= "5eea25ea2791932414f5932b";
+
+  const user =await DB.findOne({type:"User",id:id});
+
+
+
+  user.auth=null;
+ const res= await DB.update(user);
+
+  if(res.err){
+    log("ERROR during updated!");
+  }else{
+    log("Sucessfully updated!");
+  }
 
 }
 
@@ -21,6 +33,7 @@ const user =  await DB.findOne({type:"User",id:id});
         server(Mod);
     })
     .catch((e) => {
+      delete initializationProceduer;
       throw e;
     });  
 })(require("../App/pluginLoader/loader"));
