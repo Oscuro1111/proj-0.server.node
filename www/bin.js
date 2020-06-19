@@ -5,7 +5,11 @@ const fs = require('fs');
 const log = console.log; 
 
 async function server({ DB,createBucket }) {
-  
+
+  //Code ---
+
+  /*
+  Example:
   const bucket = createBucket();
   const id= "5eea25ea2791932414f5932b";
   const user =await DB.findOne({type:"User",id:id});
@@ -19,6 +23,7 @@ async function server({ DB,createBucket }) {
   fs.writeFileSync("F:/web.projects/node.server/projects/proj-0.server.node/temp/"+`${post.fileName}`,data,'utf8');
 
   log("Done");
+  */
   /*
   const data = fs.readFileSync("F:/web.projects/node.server/projects/proj-0.server.node/temp/file.text"); //does not accept relative path
   
