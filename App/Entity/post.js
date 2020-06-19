@@ -7,10 +7,10 @@ function Post(post) {
   if(post._id){
     this._id=post._id;
   }
-  
+  this.fileName=post.fileName;
+  this.fileId=post.fileId;
   this.title=post.title;
   this.author=post.author;
-  this.postFile=post.postFile;
   this.comments=post.comments;
 }
 

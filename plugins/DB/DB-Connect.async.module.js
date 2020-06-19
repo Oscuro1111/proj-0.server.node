@@ -9,6 +9,7 @@ async function connectToDataBase() {
     useUnifiedTopology: true,
   });
   const crypto = require("crypto");
+  const mongodb = require('mongodb');
   const User = mongoose.Schema({
     name: String,
     email: String,
@@ -39,7 +40,9 @@ async function connectToDataBase() {
 
   const Post = mongoose.Schema({
     title: String,
-    author: String,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    author: String,
+    fileName:String,
+    fileId:String,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     date: {
       type: Date,
       default: Date.now,
@@ -59,7 +62,7 @@ async function connectToDataBase() {
     ],
   });
   return {
-    mongoose: db,
+    mongodb: mongodb,
     connection: db.connection,
     Schema: {
       User: mongoose.model("User", User), //collection name creating model for intracting with underlying mongoDB read write operations mpa our schema
