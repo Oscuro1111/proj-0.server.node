@@ -1,5 +1,6 @@
 const {NULL_POST} = require('./Errors'); 
 function User(user){
+    
         this.type="User";
         if(user._id){
             this._id = user._id;

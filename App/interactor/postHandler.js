@@ -1,19 +1,21 @@
-const { createPost } = require("../Entity/post");
 
-const { createUser } = require("../Entity/User");
+module.exports=function Intractor(Modules) {
+  this.Modules = Modules;
+};
 
-function userHandler(user) {
-  const userA = createUser({
-    type: "User",
-    name: "Oscuro",
-    email: "oscuroSmith@gmail.com",
-    posts: [1222121],
-    
-  });
+Intractor.prototype = new Object();
 
-  DB.save(userA);
+const proto = Intractor.prototype;
 
-  console.log(userA.user.name);
-  return DB;
-}
-console.log(userHandler());
+
+proto.getPost = async function () {};
+proto.getAllPost = async function () {};
+proto.createUser = async function () {};
+proto.createPost = async function () {};
+proto.getLatest = async function () {};
+proto.getTrendingPost = async function () {};
+proto.searchPost = async function () {};
+proto.saveImage = async function () {};
+proto.getImage = async function () {};
+proto.login = async function () {};
+proto.sighUp = async function () {};

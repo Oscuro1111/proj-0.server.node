@@ -2,7 +2,6 @@ const log = console.log;
 
 const mongoose = require("mongoose");
 
-//const url;
 async function connectToDataBase() {
   const db = await mongoose.connect("mongodb://localhost:27017/admin", {
     useNewUrlParser: true,
@@ -33,6 +32,7 @@ async function connectToDataBase() {
   });
 
   Auth.methods.validatePassword = function (pass) {
+    
     let _hash = crypto.pbkdf2Sync(pass, this.salt, 500, 64, `sha512`).toString("hex");
 
     return (this.hash == _hash);
@@ -51,6 +51,7 @@ async function connectToDataBase() {
     comments: [
       {
         userId: String,
+        userName:String,
         text: String,
         reply: [
           {

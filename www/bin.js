@@ -6,8 +6,8 @@ const log = console.log;
 
 async function server({ DB,createBucket }) {
 
-  //Code ---
 
+  //Code ---
   /*
   Example:
   const bucket = createBucket();
