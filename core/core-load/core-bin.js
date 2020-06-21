@@ -1,10 +1,5 @@
 
-const { createUser } = require("../App/Entity/User");
-const {createPost}  = require('../App/Entity/post');
-const { createAuthInfo } = require("../App/Entity/auth");
-const fs = require('fs');
-const log = console.log; 
-
+const {Interactor} = require('../App/interactor/Handler');
 
 module.exports=(async (loader) => {
   const Modules = (await loader()).get();
@@ -12,12 +7,12 @@ module.exports=(async (loader) => {
   const initializationProceduer = new Promise((resolve, reject) => {
     Modules["createBucket"] = require('../plugins/DB/Bucket/bucket-implementation').getBucket(Modules);
     Modules["DB"] = require("../plugins/DB/DB-Implementation")(Modules); //implementing interface
-
-    resolve(Modules);
+    
+    resolve(new Interactor(Modules));
   })
-    .then((Mod) => {
+    .then((_Interactor_) => {
         //server(Mod);
-        return Mod;
+        return _Interactor_;
     })
     .catch((e) => {
       delete initializationProceduer;
