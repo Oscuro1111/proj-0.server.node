@@ -1,4 +1,4 @@
-module.exports.getBucket = ({ DB }, opt = null) =>()=>{
+module.exports.getBucket = ({ DB }) =>(opt=null)=>{
   const { Readable } = require("stream");
   const { connection, mongodb } = DB;
   const { ObjectId } = DB.Schema;
