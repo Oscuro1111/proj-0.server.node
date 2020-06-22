@@ -6,28 +6,33 @@ const create = {
   Post: createPost,
 };
 
-const callback = (err, data) => {
-  if (data) {
-    return;
-  }
-  if (err) {
-    throw err;
-  }
-};
-
 const log = console.log;
 const __createPost = async function (data, { Post }) {
   const post = new Post();
 
   Object.assign(post, data);
 
-  try {
-    await post.save(callback);
-  } catch (error) {
-    return { err: error };
-  }
+  const intiSave = new Promise((resolve,reject)=>{
+    try {
+     post.save((err,data)=>{
+        if(err)
+        resolve({err:err});
+        else{
+          resolve(data);
+        }
+      });
+    } catch (error) {
+      resolve({ err: error });
+    }  
+  });
+  
+const post_ = await intiSave;
 
-  data["_id"] = post._id;
+if(post_.err){
+  return {err:post_.err};
+}
+
+  data["_id"] = post_._id;
   return { err: false, data: data };
 };
 
@@ -35,14 +40,22 @@ const __createUser = async function (data, { User }) {
   const user = new User();
 
   Object.assign(user, data);
-
+const initSave = new Promise((resolve,reject)=>{
   try {
-    await user.save(callback);
+     user.save((err,data)=>{
+       if(err){
+          resolve({err:err});
+       }else{
+         resolve(data);
+       }
+     });
   } catch (err) {
-    return { err: err };
+    resolve({ err: err });
   }
-
-  data["_id"] = user._id;
+});
+  
+  const user_ = await initSave;
+  data["_id"] = user_._id;
 
   return { err: false, data: data };
 };
@@ -51,14 +64,22 @@ async function __createAuth(data, { Auth }) {
   const auth = new Auth();
 
   Object.assign(auth, data);
-
+ const initSave = new Promise((resolve,reject)=>{
   try {
-    await auth.save(callback);
+    auth.save((err,data)=>{
+      if(err){
+        resolve(err);
+      }else{
+        resolve(data);
+      }
+    });
   } catch (error) {
-    return { err: error };
+    resolve({ err: error });
   }
-
-  data["_id"] = auth._id;
+});
+  
+const auth_ = await initSave;
+  data["_id"] = auth_._id;
 
   return { err: false, data: data };
 }
@@ -137,8 +158,11 @@ module.exports = ({ DB }) => ({
         return data;
       })
       .then((data) => {
-        if (data.err) return data;
+        if (data&&data.err) return data;
+        if(data)
         return create[type](data);
+
+        return {err:"Not found or undefined err!"};
       });
   },
   findAll: async (type) => {

@@ -7,9 +7,9 @@ Utils.prototype = new Object();
 const proto = Utils.prototype;
 
 proto.getUser = async function (id) {
-  console.log(this);
   const { DB } = this.Modules;
   const result = await DB.findOne({ type: "User", id: id });
+
   if (result.err) {
     return false;
   }
@@ -19,10 +19,10 @@ proto.getUser = async function (id) {
 
 proto.getPost = async function (id) {
   const { DB } = this.Modules;
-
+  
   const result = await DB.findOne({ type: "Post", id: id });
   if (result.err) {
-    return false;
+    return {err:err};
   }
 
   return result;
