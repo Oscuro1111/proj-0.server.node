@@ -9,6 +9,9 @@ function Post(post) {
   }
   this.fileName=post.fileName;
   this.fileId=post.fileId;
+  if(post.date){
+    this.date=post.date;
+  }
   this.title=post.title;
   this.author=post.author;
   this.comments=post.comments;

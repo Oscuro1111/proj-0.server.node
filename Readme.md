@@ -1,4 +1,6 @@
 /----------------------------------------/
-Objectives:
 
-1)Make esasy upload system.                                    
+TO Run app
+
+1)npm install
+2)npm start
