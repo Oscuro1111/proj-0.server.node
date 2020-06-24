@@ -106,24 +106,22 @@ proto.createUser = async function (data) {
 proto.getPostData = async function (id) {
   const { createBucket } = this.Modules;
 
-  if (id.length==0) {
+  if (id.length == 0) {
     return false;
   }
   const post = await this.utils.getPost(id);
 
-  
-  if(post.err){
-      return false;
-  };
+  if (post.err) {
+    return false;
+  }
   if (post) {
     const { fileName, fileId, author, title, date } = post;
 
-    const  bucket = createBucket(); //default bucket Posts.Data
+    const bucket = createBucket(); //default bucket Posts.Data
 
     const file = await bucket.downloadFile(fileId);
 
     if (file.err) {
-     
       return false;
     }
 
@@ -135,16 +133,90 @@ proto.getPostData = async function (id) {
       fileName,
       fileData,
       date,
-    };//Send post data back
-
+    }; //Send post data back
   } else {
     return false;
-  }//if err
+  } //if err
 };
-proto.getAllPost = async function () {};
-proto.getLatest = async function () {};
-proto.getTrendingPost = async function () {};
-proto.searchPost = async function () {};
+proto.getAllPost = async function () {
+  //Done
+  const { DB, createBucket } = this.Modules;
+  const posts = [];
+  const postList = await DB.findAll("Post");
+
+  if (postList.err) {
+    return false;
+  }
+
+  if (postList.length && postList.length == 0) {
+    return false;
+  }
+
+  const bucket = createBucket();
+
+  for (const { author, title, date, fileName, fileId } of postList) {
+    const file = await bucket.downloadFile(fileId);
+
+    if (file.err) {
+      return false;
+    }
+
+    const fileData = file.data;
+    const timePassed = ((d) => {
+      let d1 = Date.parse(d);
+      return d1;
+    })(date);
+
+    posts.push({ author, fileName, fileData, title, timePassed, date });
+  }
+  return posts;
+};
+
+proto.getLatestPosts = async function (timeOld = null) {
+  const posts = await this.getAllPost();
+  const now = Date.now();
+  const timeSpan = timeOld || 48 * 60 * 1000; //default:Last 2 days long
+  const limit = now - timeSpan; //2 days back
+  const latest = [];
+
+  if (!posts) {
+    return false;
+  }
+
+  for (const post of posts) {
+    if (limit < post.timePassed) {
+      latest.push(post);
+    }
+  }
+
+  return latest;
+};
+
+proto.searchPost = async function (pattern) {
+
+const postList  = await this.getAllPost();
+const matched =  [];
+if(!postList){
+  return false;   
+}
+
+for(const post  of postList){
+  let title = new String(post.title);
+
+  if(this.utils.matchPattern(pattern,title)){
+     matched.push(post);
+  }
+}
+
+if(matched.length===0){
+  return false;
+}
+
+    return matched;
+};
+
+
+
 proto.saveImage = async function () {};
 proto.getImage = async function () {};
 proto.login = async function () {};

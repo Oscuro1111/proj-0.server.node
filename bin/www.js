@@ -5,10 +5,10 @@ async function createUser(coreModule){
 
   
   const res=await coreModule.createUser({
-     name:"James",
-     email:"james@gmail.com",
-      pass:"James1999",
-  });
+     name:"Oscuro",
+     email:"Oscuro@gmail.com",
+      pass:"Oscuro1999",
+  });         
   return res;
 }
 
@@ -19,7 +19,7 @@ async function createPost(coreModule,id){
   const res =  await coreModule.createPost({
     id:id,
     title:"Closures in javascript",
-    fileName:"JamesPage.text",
+    fileName:"oscuro.text",
     fileData:data,
   });
   
@@ -33,7 +33,7 @@ async function getPost(coreModule,id){
  
   const res =  await coreModule.getPostData(id);
   const path="F:/web.projects/node.server/projects/proj-0.server.node/temp/"
-console.log(res);
+
   if(res){
     const {fileData,fileName} = res;
     
@@ -45,9 +45,14 @@ return res;
 const run = (async (_) => {
   const coreModule = await require("../core/core-load/core-bin");
  
-  const uid =    await createUser(coreModule);
-  const postid = await createPost(coreModule,uid);
-  const res =    await getPost(coreModule,postid);
+ // const uid =    await createUser(coreModule);
+  // const postid = await createPost(coreModule,uid);
+   //const res =    await getPost(coreModule,postid);
+  
+
+  //const res = await coreModule.getLatestPosts();
+   const res = await  coreModule.searchPost("of in the exe");
+  console.log(res);
   if(res){
     console.log("User created!");
   }
