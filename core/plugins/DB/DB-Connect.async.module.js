@@ -79,5 +79,5 @@ module.exports = connectToDataBase()
     throw e;
   })
   .finally(() => {
-    log("Call to DB Executed.");
+      //Any resourcse to release
   });

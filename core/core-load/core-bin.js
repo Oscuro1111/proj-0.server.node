@@ -15,7 +15,7 @@ module.exports=(async (loader) => {
         return _Interactor_;
     })
     .catch((e) => {
-      delete initializationProceduer;
+    
       throw e;
     });  
 

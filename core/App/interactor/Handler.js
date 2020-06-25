@@ -193,32 +193,59 @@ proto.getLatestPosts = async function (timeOld = null) {
 };
 
 proto.searchPost = async function (pattern) {
-
-const postList  = await this.getAllPost();
-const matched =  [];
-if(!postList){
-  return false;   
-}
-
-for(const post  of postList){
-  let title = new String(post.title);
-
-  if(this.utils.matchPattern(pattern,title)){
-     matched.push(post);
+  const postList = await this.getAllPost();
+  const matched = [];
+  if (!postList) {
+    return false;
   }
-}
 
-if(matched.length===0){
-  return false;
-}
+  for (const post of postList) {
+    let title = new String(post.title);
 
-    return matched;
+    if (this.utils.matchPattern(pattern, title)) {
+      matched.push(post);
+    }
+  }
+
+  if (matched.length === 0) {
+    return false;
+  }
+
+  return matched;
 };
 
+proto.saveImage = async function ({ fileName, fileData }) {
+  const { createBucket } = this.Modules;
+  const bucketName = "Images.Data";
+  const bucket = createBucket({bucketName:bucketName});
+  const info = await bucket.uploadFile({ name: fileName, data: fileData });
+  if (info.err) {
+    return false;
+  }
+  return info.uploadId;
+};
+proto.getImage = async function (id) {
+  const { createBucket } = this.Modules;
+  const bucketName = "Images.Data";
+  const bucket = createBucket({bucketName:bucketName});
 
+  const file = await bucket.downloadFile(id);
 
-proto.saveImage = async function () {};
-proto.getImage = async function () {};
-proto.login = async function () {};
+  if (file.err) {
+    return false;
+  }
+
+  return file.data;
+};
+proto.login = async function ({ pass, user }) {
+  const { DB } = this.Modules;
+
+  const isAuthorized = await DB.validateUser({
+    pass: pass,
+    user: user,  
+  });
+
+  return isAuthorized;
+};
 
 module.exports.Interactor = Interactor;
