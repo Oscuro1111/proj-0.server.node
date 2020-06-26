@@ -12,25 +12,24 @@ const __createPost = async function (data, { Post }) {
 
   Object.assign(post, data);
 
-  const intiSave = new Promise((resolve,reject)=>{
+  const intiSave = new Promise((resolve, reject) => {
     try {
-     post.save((err,data)=>{
-        if(err)
-        resolve({err:err});
-        else{
+      post.save((err, data) => {
+        if (err) resolve({ err: err });
+        else {
           resolve(data);
         }
       });
     } catch (error) {
       resolve({ err: error });
-    }  
+    }
   });
-  
-const post_ = await intiSave;
 
-if(post_.err){
-  return {err:post_.err};
-}
+  const post_ = await intiSave;
+
+  if (post_.err) {
+    return { err: post_.err };
+  }
 
   data["_id"] = post_._id;
   return { err: false, data: data };
@@ -40,20 +39,20 @@ const __createUser = async function (data, { User }) {
   const user = new User();
 
   Object.assign(user, data);
-const initSave = new Promise((resolve,reject)=>{
-  try {
-     user.save((err,data)=>{
-       if(err){
-          resolve({err:err});
-       }else{
-         resolve(data);
-       }
-     });
-  } catch (err) {
-    resolve({ err: err });
-  }
-});
-  
+  const initSave = new Promise((resolve, reject) => {
+    try {
+      user.save((err, data) => {
+        if (err) {
+          resolve({ err: err });
+        } else {
+          resolve(data);
+        }
+      });
+    } catch (err) {
+      resolve({ err: err });
+    }
+  });
+
   const user_ = await initSave;
   data["_id"] = user_._id;
 
@@ -64,21 +63,21 @@ async function __createAuth(data, { Auth }) {
   const auth = new Auth();
 
   Object.assign(auth, data);
- const initSave = new Promise((resolve,reject)=>{
-  try {
-    auth.save((err,data)=>{
-      if(err){
-        resolve(err);
-      }else{
-        resolve(data);
-      }
-    });
-  } catch (error) {
-    resolve({ err: error });
-  }
-});
-  
-const auth_ = await initSave;
+  const initSave = new Promise((resolve, reject) => {
+    try {
+      auth.save((err, data) => {
+        if (err) {
+          resolve(err);
+        } else {
+          resolve(data);
+        }
+      });
+    } catch (error) {
+      resolve({ err: error });
+    }
+  });
+
+  const auth_ = await initSave;
   data["_id"] = auth_._id;
 
   return { err: false, data: data };
@@ -158,11 +157,10 @@ module.exports = ({ DB }) => ({
         return data;
       })
       .then((data) => {
-        if (data&&data.err) return data;
-        if(data)
-        return create[type](data);
+        if (data && data.err) return data;
+        if (data) return create[type](data);
 
-        return {err:"Not found or undefined err!"};
+        return { err: "Not found or undefined err!" };
       });
   },
   findAll: async (type) => {
@@ -191,11 +189,11 @@ module.exports = ({ DB }) => ({
 
           resolve(list);
         });
-    }).catch(ex=>{
-        throw ex;
+    }).catch((ex) => {
+      throw ex;
     });
 
-    return await prom.then(result=>result);
+    return await prom.then((result) => result);
   },
 
   delete: async (data) => {
@@ -206,5 +204,58 @@ module.exports = ({ DB }) => ({
     } catch (error) {
       return { done: false, err: error };
     }
+  }, //End delete
+
+  deleteFile: async function (fileId, bucketName) {
+    const { db, ObjectId } = DB.Schema;
+
+    const delChunks = new Promise((resolve, reject) => {
+      db.collection(bucketName + ".chunks", function (err, collection) {
+        if (err) {
+          resolve({ err: err });
+        }
+        collection.deleteMany({ files_id: ObjectId(fileId) }, function (
+          err,
+          result
+        ) {
+          if (err) {
+            resolve({ err: err });
+          }
+          resolve({ result: result });
+        }); //End collection.deleteMany
+      }); //End db.collection
+    }); //End of delChunks
+
+    const result1 = await delChunks;
+
+    if (result1.err) {
+      return { err: err };
+    }
+
+    const delFile = new Promise((resolve, reject) => {
+      db.collection(bucketName + ".files", function (err, collection) {
+        if (err) {
+          resolve({ err: err });
+        }
+        collection.deleteOne({ _id:ObjectId(fileId) }, function (
+          err,
+          result
+        ) {
+          if (err) {
+            resolve({ err: err });
+          }
+
+          resolve({ result: result });
+        });
+      });
+    }); //End of delFile
+
+    const result2 = await delFile;
+
+    if (result2.err) {
+      return { err: err };
+    }
+
+    return { result1, result2 };
   },
 });

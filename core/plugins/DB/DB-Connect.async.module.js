@@ -9,6 +9,7 @@ async function connectToDataBase() {
   });
   const crypto = require("crypto");
   const mongodb = require('mongodb');
+  mongoose.Promise=global.Promise;
   const User = mongoose.Schema({
     name: String,
     email: String,
@@ -62,6 +63,7 @@ async function connectToDataBase() {
       },
     ],
   });
+  
   return {
     mongodb: mongodb,
     connection: db.connection,
@@ -70,6 +72,8 @@ async function connectToDataBase() {
       Auth: mongoose.model("Auth", Auth),
       Post:mongoose.model('Post',Post),
       ObjectId:mongoose.Types.ObjectId,
+      db:db.connection.db,
+      mongoose:mongoose,
     },
   };
 }

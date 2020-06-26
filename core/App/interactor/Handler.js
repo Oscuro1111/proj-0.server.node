@@ -8,6 +8,7 @@ const { createPost } = require("../Entity/post");
 const { createAuthInfo } = require("../Entity/auth");
 const { Utils } = require("./util/utils");
 const { UNVALID_PASSWORD_LENGTH } = require("../Entity/Errors");
+
 const log = console.log;
 
 function Interactor(Modules) {
@@ -140,7 +141,7 @@ proto.getPostData = async function (id) {
 };
 proto.getAllPost = async function () {
   //Done
-  const { DB, createBucket } = this.Modules;
+  const { DB} = this.Modules;
   const posts = [];
   const postList = await DB.findAll("Post");
 
@@ -152,22 +153,14 @@ proto.getAllPost = async function () {
     return false;
   }
 
-  const bucket = createBucket();
-
   for (const { author, title, date, fileName, fileId } of postList) {
-    const file = await bucket.downloadFile(fileId);
 
-    if (file.err) {
-      return false;
-    }
-
-    const fileData = file.data;
     const timePassed = ((d) => {
       let d1 = Date.parse(d);
       return d1;
     })(date);
 
-    posts.push({ author, fileName, fileData, title, timePassed, date });
+    posts.push({ author, fileName,title, timePassed, date,fileId });
   }
   return posts;
 };
@@ -247,5 +240,20 @@ proto.login = async function ({ pass, user }) {
 
   return isAuthorized;
 };
+proto.deletePost = async function(id){//done
+       const {DB} = this.Modules;
+       const post = await this.utils.getPost(id);
+       const {fileId} = post;
 
+       const res=await DB.deleteFile(fileId,"Posts.Data");
+
+      const res1 = await DB.delete(post);
+
+       if(res.err||res1.err){
+         return false;
+       }
+
+       return {res,done:true,postID:id};
+
+}
 module.exports.Interactor = Interactor;
