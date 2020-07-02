@@ -237,10 +237,7 @@ module.exports = ({ DB }) => ({
         if (err) {
           resolve({ err: err });
         }
-        collection.deleteOne({ _id:ObjectId(fileId) }, function (
-          err,
-          result
-        ) {
+        collection.deleteOne({ _id: ObjectId(fileId) }, function (err, result) {
           if (err) {
             resolve({ err: err });
           }
@@ -258,4 +255,5 @@ module.exports = ({ DB }) => ({
 
     return { result1, result2 };
   },
+  ObjectId:DB.Schema.ObjectId
 });

@@ -49,4 +49,27 @@ proto.matchPattern = function (pattern, toMatch) {
   return isMatched ? true : false;
 };
 
+/**
+ *
+ * @param list array List
+ * @param item -item to remove
+ * @description accept array  of list and remove elememt from it
+ * @returns removed array lists
+ *
+ */
+proto.deleteFromList = function (list, item) {
+  if (list.findIndex) {
+    
+    const index = list.findIndex((ele) => {
+      return ele == item;
+    });
+
+    if (index === -1) {
+      return -1;
+    }
+    return list.splice(index, 1);
+  }
+
+  return -1;
+};
 module.exports.Utils = Utils;

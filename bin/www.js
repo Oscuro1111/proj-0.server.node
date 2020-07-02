@@ -16,7 +16,7 @@ async function createPost(coreModule, id) {
   );
   const res = await coreModule.createPost({
     id: id,
-    title: "Closures in javascript",
+    title: "Async and await.",
     fileName: "oscuro.text",
     fileData: data,
   });
@@ -37,14 +37,16 @@ async function getPost(coreModule, id) {
 }
 const run = (async (_) => {
   const coreModule = await require("../core/core-load/core-bin");
+
+  // const id = await createUser(coreModule);
+  //  const post = await createPost(coreModule,id);
+
   //const id = "5ef31e5ef247174eb05e2d46";
-  
-  const res = await coreModule.getAllPost();
-  console.log(res);
-  if (res) {
-    console.log("Authorized!");
-  }
-  return res;
+  //_start(coreModule);
+
+  _start(coreModule);
+
+  return true;
 })();
 
 run.then((res) => {
