@@ -73,6 +73,19 @@ proto.createUser = async function (data) {
   const { DB } = this.Modules;
   const { name, email, pass } = data;
 
+  //ckecking user with this email id already existed or not
+  const result = await DB.findAndSelect({
+    type: "User",
+    prop: {
+      email: email,
+    },
+    select: "email",
+  });
+
+  if (result._id) {
+    return { msg: "User already existed!" };
+  }
+
   const auth = createAuthInfo({ pass: pass });
 
   if (auth === UNVALID_PASSWORD_LENGTH) {
@@ -95,7 +108,6 @@ proto.createUser = async function (data) {
   const res = await DB.save(user);
 
   if (res.err) {
-    console.log("No user");
     return false;
   }
 
@@ -227,15 +239,34 @@ proto.getImage = async function (id) {
 
   return file.data;
 };
-proto.login = async function ({ pass, user }) {
+proto.login = async function ({ pass, emailID }) {
+  const notAuthorized = false;
   const { DB } = this.Modules;
+
+  const user = await DB.findAndSelect({
+    type: "User",
+    prop: {
+      email: emailID,
+    },
+    select: null, //select all prop of user.
+  });
+  if (!user._id) {
+    return notAuthorized;
+  }
 
   const isAuthorized = await DB.validateUser({
     pass: pass,
-    user: user,
+    user: user, //require user object
   });
 
-  return isAuthorized;
+  return { isAuthorized: isAuthorized, id: user._id };
+};
+proto.deleteImg = async function (id) {
+  const { DB } = this.Modules;
+
+  const res = await DB.deleteFile(id, "Images.Data");
+
+  return res;
 };
 proto.deletePost_ = async function (id) {
   //done-(must not use direactly in application logic-USER MUST UPDATED)
@@ -260,7 +291,7 @@ proto.deletePost = async function ({ uId, postId }) {
 
   const user = await this.utils.getUser(uId);
   if (!user.posts || user.posts.length == 0) {
-    return {err:"no post found at user!"};
+    return { err: "no post found at user!" };
   }
 
   const res = await this.deletePost_(postId);
@@ -269,7 +300,7 @@ proto.deletePost = async function ({ uId, postId }) {
   }
 
   if (this.utils.deleteFromList(user.posts, postId) == -1) {
-    return {err:"Not able to remove postid from list halted user update"};
+    return { err: "Not able to remove postid from list halted user update" };
   }
 
   const res1 = await DB.update(user);

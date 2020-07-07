@@ -3,6 +3,8 @@
 /**
  * Module dependencies.
  */
+
+
 const debug = require("debug")("node.genric.server:server");
 
 const getApp = require("../app");
@@ -14,17 +16,25 @@ const http = require("http");
  */
 
 const port = normalizePort(process.env.PORT || "4000");
-
+const skt_ ={}; 
 module.exports._start = function (coreModule) {
-  const app = getApp(coreModule);
+  
+  const app = getApp(coreModule,skt_);
+  
   app.set("port", port);
 
+  const server = http.createServer(app);
+  
+  const io= require('socket.io')(server);
+
+  skt_.io=io;
   /**
    * Create HTTP server.
    */
+  
 
-  const server = http.createServer(app);
 
+  server.setTimeout(1000*60*60);
   /**
    * Event listener for HTTP server "listening" event.
    */

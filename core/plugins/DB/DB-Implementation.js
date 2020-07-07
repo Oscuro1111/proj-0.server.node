@@ -193,7 +193,7 @@ module.exports = ({ DB }) => ({
       throw ex;
     });
 
-    return await prom.then((result) => result);
+    return await prom.then((result) =>(result||{}));
   },
 
   delete: async (data) => {

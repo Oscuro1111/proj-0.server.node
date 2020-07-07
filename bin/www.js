@@ -3,9 +3,9 @@ const fs = require("fs");
 
 async function createUser(coreModule) {
   const res = await coreModule.createUser({
-    name: "Oscuro",
-    email: "Oscuro@gmail.com",
-    pass: "Oscuro1999",
+    name: "xagent",
+    email: "xagent1999@gmail.com",
+    pass: "Oscuro1999;",
   });
   return res;
 }
@@ -16,8 +16,8 @@ async function createPost(coreModule, id) {
   );
   const res = await coreModule.createPost({
     id: id,
-    title: "Async and await.",
-    fileName: "oscuro.text",
+    title: "Async and await part(1).",
+    fileName: "XAGENT.text",
     fileData: data,
   });
 
@@ -35,17 +35,17 @@ async function getPost(coreModule, id) {
   }
   return res;
 }
+
 const run = (async (_) => {
+  
   const coreModule = await require("../core/core-load/core-bin");
 
-  // const id = await createUser(coreModule);
-  //  const post = await createPost(coreModule,id);
+   //const id = '5eff336584114f0c84f21103';
+  // const post = await createPost(coreModule,id);
 
   //const id = "5ef31e5ef247174eb05e2d46";
-  //_start(coreModule);
 
   _start(coreModule);
-
   return true;
 })();
 
