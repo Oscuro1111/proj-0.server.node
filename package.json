@@ -1,20 +1,31 @@
 {
-  "name": "proj-0.server.node",
-  "version": "1.0.0",
-  "description": "Web server",
+  "name": "node.genric.server",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "node ./www/bin.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www",
+    "test": "jest"
   },
-  "author": "Oscuro Smith",
-  "license": "ISC",
   "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "debug": "~2.6.9",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.5.0",
+    "gridfs-stream": "^1.1.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
     "jest": "^26.0.1",
     "jshint": "^2.11.1",
     "mongodb": "^3.5.9",
-    "mongoose": "^5.9.18",
+    "mongoose": "^5.9.19",
+    "morgan": "~1.9.1",
+    "pug": "^2.0.4",
+    "socket.io": "^2.3.0",
+    "sockets": "^0.4.2",
     "xlsx": "^0.16.2"
   }
 }
