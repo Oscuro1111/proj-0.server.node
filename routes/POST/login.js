@@ -14,8 +14,6 @@ module.exports = function (express, coreModule) {
 
       req.session.user = ((user.other = user_), user);
 
-      console.log(req.session);
-
       res.redirect("/createPost");
       return;
     } else {

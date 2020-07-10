@@ -34,7 +34,7 @@ proto.createPost = async function (data) {
   } = data;
 
   const bucket = createBucket();
-
+ const thum_=thum;
   const user = await this.utils.getUser(id); //Do not destructure any fuction using this inside
   if (user.err) {
     return false;
@@ -51,12 +51,12 @@ proto.createPost = async function (data) {
     author: user.name,
     fileName: fileName,
     fileId: fileId.uploadId,
+    thum:thum_,//thumnail Image id upload id
     comments: [],
-    thum:thum//thumnail Image id upload id
   });
 
+ 
   const result = await DB.save(post);
-
   if (result.err) {
     return false;
   }
@@ -166,13 +166,13 @@ proto.getAllPost = async function () {
     return false;
   }
 
-  for (const { author, title, date, fileName, fileId, _id } of postList) {
+  for (const { author, title, date, fileName, fileId, _id,thum } of postList) {
     const timePassed = ((d) => {
       let d1 = Date.parse(d);
       return d1;
     })(date);
     const postId = _id;
-    posts.push({ postId, author, fileName, title, timePassed, date, fileId });
+    posts.push({ postId, author, fileName, title, timePassed, date, fileId ,thum});
   }
   return posts;
 };
