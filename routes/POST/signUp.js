@@ -19,10 +19,14 @@ module.exports= function(express,coreModule){
           res.status(200).send("User with same email address already exist.");
           return;
       }
+    
       
       req.session.user={
           id:id,
-          isAuthorized:true
+          isAuthorized:true,
+          other:{
+              name:user
+          }
       };
 
       res.redirect('/createPost');

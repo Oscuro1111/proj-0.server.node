@@ -15,6 +15,7 @@ function Post(post) {
   this.title=post.title;
   this.author=post.author;
   this.comments=post.comments;
+  this.thum=post.thum;//thumnail image id ::[String]
 }
 
 Post.prototype = new Object();
