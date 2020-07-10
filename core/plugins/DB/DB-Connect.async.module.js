@@ -3,10 +3,19 @@ const log = console.log;
 const mongoose = require("mongoose");
 
 async function connectToDataBase() {
+  const db = await mongoose.connect("mongodb://localhost:27017/admin", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  /*
   const db = await mongoose.connect("mongodb+srv://cosmo:BPWZWck8bCN0hStE@cluster0-guxyc.mongodb.net/<dbname>?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+
+  
+  */
   const crypto = require("crypto");
   const mongodb = require('mongodb');
   mongoose.Promise=global.Promise;
@@ -17,6 +26,7 @@ async function connectToDataBase() {
       type: Date,
       default: Date.now,
     },
+   
     auth: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Auth",
@@ -49,6 +59,7 @@ async function connectToDataBase() {
       default: Date.now,
     },
     postFile: String,
+    thum:String,//thumnail image uplaad id
     comments: [
       {
         userId: String,

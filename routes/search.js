@@ -3,7 +3,7 @@ module.exports=function(express,core){
 
     return router.get('/post',async function(req,res,next){
         const pattern = req.query.pattern;
-        console.log("patter::",req.query);
+      
         const posts = await core.searchPost(pattern);
         if(posts){
             res.send(posts);

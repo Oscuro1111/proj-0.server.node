@@ -30,6 +30,7 @@ proto.createPost = async function (data) {
     title, //title
     fileData, //File data -type:buffer ,encoding used: utf-8
     fileName, //File name
+    thum  , //thumNailImage
   } = data;
 
   const bucket = createBucket();
@@ -51,6 +52,7 @@ proto.createPost = async function (data) {
     fileName: fileName,
     fileId: fileId.uploadId,
     comments: [],
+    thum:thum//thumnail Image id upload id
   });
 
   const result = await DB.save(post);
@@ -71,9 +73,9 @@ proto.createPost = async function (data) {
 
 proto.createUser = async function (data) {
   const { DB } = this.Modules;
-  const { name, email, pass } = data;
+  const { user, email, pass } = data;
 
-  //ckecking user with this email id already existed or not
+  //checking user with this email id already existed or not
   const result = await DB.findAndSelect({
     type: "User",
     prop: {
@@ -82,7 +84,7 @@ proto.createUser = async function (data) {
     select: "email",
   });
 
-  if (result._id) {
+  if (result&&result._id) {
     return { msg: "User already existed!" };
   }
 
@@ -98,20 +100,20 @@ proto.createUser = async function (data) {
     return false;
   }
 
-  const user = createUser({
-    name: name,
+  const user_ = createUser({
+    name: user,
     email: email,
     posts: [],
     auth: auth._id,
   });
 
-  const res = await DB.save(user);
+  const res = await DB.save(user_);
 
   if (res.err) {
     return false;
   }
 
-  return user._id;
+  return user_._id;
 };
 
 proto.getPostData = async function (id) {
@@ -126,7 +128,7 @@ proto.getPostData = async function (id) {
     return false;
   }
   if (post) {
-    const { fileName, fileId, author, title, date } = post;
+    const { fileName, fileId, author, title, date,thum } = post;
 
     const bucket = createBucket(); //default bucket Posts.Data
 
@@ -144,6 +146,7 @@ proto.getPostData = async function (id) {
       fileName,
       fileData,
       date,
+      thum
     }; //Send post data back
   } else {
     return false;

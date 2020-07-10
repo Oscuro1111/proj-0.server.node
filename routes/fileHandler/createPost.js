@@ -14,18 +14,20 @@ module.exports = function (express, coreModule) {
     ],//checking user  authorization
     async function (req, res, next) {
 
-      const { title ,fileData} = req.body;
+      const { title ,fileData,thum} = req.body;
+      console.log(thum);
 
       const fileData_ = Buffer.from(fileData);//
       const fileName = `${title}.html`;
 
-
+  
       const result = await coreModule.createPost({
         id: req.session.user.id,
         title: title,
         fileData: fileData_,
         fileName: fileName,
-      });//result
+        thum:thum,
+      });//result author: req.session.user.other.name
 
       if (result) {
         res.redirect("http://localhost:3000/");
