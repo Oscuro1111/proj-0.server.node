@@ -6,12 +6,14 @@ module.exports = function (express, core) {
     var data = null;
     try{
      data = await core.getPostData(id);
+
     }catch(e){
       res.status(404).send({ data: null });
     }
     if (data) {
    // res.set('Content-Type',mime.lookup(fileName));
-      res.status(200).send([data]);
+      //res.status(200).send([data]);
+      res.status(200).send(data.fileData);
     } 
   });
 };
