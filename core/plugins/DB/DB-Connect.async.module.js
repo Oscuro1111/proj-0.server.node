@@ -16,9 +16,6 @@ async function connectToDataBase() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-
-  
-
   const crypto = require("crypto");
   const mongodb = require('mongodb');
   mongoose.Promise=global.Promise;
