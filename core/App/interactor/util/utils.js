@@ -28,8 +28,11 @@ proto.getPost = async function (id) {
   return result;
 };
 
-proto.matchPattern = function (pattern, toMatch) {
-  const str = new String(pattern);
+proto.matchPattern = function (pattern, toMatch_) {
+  
+  const str = new String(pattern).toLowerCase();
+  const toMatch = new String(toMatch_).toLowerCase();
+
   const words = str.split(" ");
   let init = false;
 
