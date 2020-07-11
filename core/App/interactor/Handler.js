@@ -166,13 +166,13 @@ proto.getAllPost = async function () {
     return false;
   }
 
-  for (const { author, title, date, fileName, fileId, _id } of postList) {
+  for (const { author, title, date, fileName, fileId, _id,thum } of postList) {
     const timePassed = ((d) => {
       let d1 = Date.parse(d);
       return d1;
     })(date);
     const postId = _id;
-    posts.push({ postId, author, fileName, title, timePassed, date, fileId });
+    posts.push({ postId, author, fileName, title, timePassed, date, fileId ,thum});
   }
   return posts;
 };

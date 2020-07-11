@@ -53,7 +53,8 @@ app.use(
   })
 );
 
-module.exports = (coreModule, skt_) => {
+module.exports =(coreModule, skt_) => {
+
   app.use("/", index);
   app.use(LoginGet(__dirname, express, fs));
   app.use(LoginPost(express, coreModule));

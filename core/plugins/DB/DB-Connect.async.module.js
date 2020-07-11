@@ -12,7 +12,7 @@ async function connectToDataBase() {
 
 
   */
-  const db = await mongoose.connect("mongodb+srv://cosmo:BPWZWck8bCN0hStE@cluster0-guxyc.mongodb.net/<dbname>?retryWrites=true&w=majority", {
+  const db = await mongoose.connect("mongodb+srv://cosmo:BPWZWck8bCN0hStE@cluster0-guxyc.mongodb.net/techserver01?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
