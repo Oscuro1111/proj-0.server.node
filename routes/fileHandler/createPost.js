@@ -28,9 +28,9 @@ module.exports = function (express, coreModule) {
         fileName: fileName,
         thum:thum,
       });//result author: req.session.user.other.name
-
+      console.log(`${(new Date()).getMinutes()},postID::[${result}]`);
       if (result) {
-        res.redirect("http://localhost:3000/");
+        res.redirect("http://tech-inventory.herokuapp.com:3000/");
         return;
       } else {//end result
         res.status(400).send("503 Internal server error!");

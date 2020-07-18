@@ -71,6 +71,7 @@ module.exports =(coreModule, skt_) => {
   app.use(TempImg(express));
   app.use(ImageHandler(express, coreModule, skt_));
   app.use("/auth", CreatePost(express, coreModule));
+  app.use("/auth",require("./routes/GET/deletePost")(express,coreModule));
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {
     next(createError(404));
