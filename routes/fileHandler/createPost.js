@@ -17,7 +17,7 @@ module.exports = function (express, coreModule) {
       const { title ,fileData,thum} = req.body;
       console.log(thum);
 
-      const fileData_ = Buffer.from(fileData);//
+      const fileData_ = Buffer.from(fileData);
       const fileName = `${title}.html`;
 
   
@@ -30,7 +30,7 @@ module.exports = function (express, coreModule) {
       });//result author: req.session.user.other.name
       console.log(`${(new Date()).getMinutes()},postID::[${result}]`);
       if (result) {
-        res.redirect("http://tech-inventory.herokuapp.com:3000/");
+        res.redirect("http://tech-inventory.herokuapp.com/");
         return;
       } else {//end result
         res.status(400).send("503 Internal server error!");
